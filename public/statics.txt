@@ -1,0 +1,2 @@
+La carpeta PUBLIC contiene los archivos estáticos.
+Los ARCHIVOS ESTÁTICOS: indican que el servidor se levantó. También se pueden servir en la página (en caso de que haya algo que mostrar en el front)
