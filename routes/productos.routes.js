@@ -1,5 +1,5 @@
 const express = require("express");
-const { obtenerProducPorIdOTodos, crearProducto, editarProductoXId, eliminarProductoXId } = require("../controllers/productos.controllers");
+const { obtenerProducPorIdOTodos, crearProducto, editarProductoXId, eliminarProductoXId, obtenerProductoPorParametro } = require("../controllers/productos.controllers");
 const router = express.Router();
 /* También se puede desestructurar
 const { Router } = require('express) -> trae directamente Router de la librerái express
@@ -7,11 +7,7 @@ const { Router } = require('express) -> trae directamente Router de la librerái
 
 // GET
 /* PARAMS */
-router.get("/:idProducto", (req, res) => {
-  const id = Number(req.params.idProducto); //es necesario parsearlo porque si no lo toma como string
-  const producto = productos.find((prod) => prod.id === id);
-  res.status(200).json(producto);
-});
+router.get("/:idProducto", obtenerProductoPorParametro);
 
 /* QUERY */
 router.get("/", obtenerProducPorIdOTodos)

@@ -1,17 +1,15 @@
-
 let productos = [
-    {
-      id: 1,
-      nombre: "Celular",
-      precio: 2000,
-    },
-    {
-      id: 2,
-      nombre: "Tablet",
-      precio: 5000,
-    },
-  ];
-  
+  {
+    id: 1,
+    nombre: "Celular",
+    precio: 2000,
+  },
+  {
+    id: 2,
+    nombre: "Tablet",
+    precio: 5000,
+  },
+];
 
 const obtenerProducPorIdOTodos = (req, res) => {
   try {
@@ -21,6 +19,20 @@ const obtenerProducPorIdOTodos = (req, res) => {
       res.status(200).json(producto);
     } else {
       res.status(200).json(productos);
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+const obtenerProductoPorParametro = (req, res) => {
+  try {
+    const id = Number(req.params.idProducto); //es necesario parsearlo porque si no lo toma como string
+    const producto = productos.find((prod) => prod.id === id);
+    if (producto) {
+      res.status(200).json(producto);
+    } else {
+      res.status(404).json('Producto no encontrado')
     }
   } catch (error) {
     res.status(500).json(error);
@@ -68,6 +80,7 @@ const eliminarProductoXId = (req, res) => {
 
 module.exports = {
   obtenerProducPorIdOTodos,
+  obtenerProductoPorParametro,
   crearProducto,
   editarProductoXId,
   eliminarProductoXId,
