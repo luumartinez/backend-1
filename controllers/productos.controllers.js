@@ -1,23 +1,15 @@
-let productos = [
-  {
-    id: 1,
-    nombre: "Celular",
-    precio: 2000,
-  },
-  {
-    id: 2,
-    nombre: "Tablet",
-    precio: 5000,
-  },
-];
+const serviciosProductos = require('../services/productos.services')
 
-const obtenerProducPorIdOTodos = (req, res) => {
+
+const obtenerProducPorIdOTodos = async (req, res) => {
   try {
-    let id = Number(req.query.id);
+    let id = req.query.id;
     if (id) {
-      const producto = productos.find((prod) => prod.id === id);
+      // const producto = productos.find((prod) => prod.id === id);
+      const producto = await serviciosProductos.obtenerUnProducto(id)
       res.status(200).json(producto);
     } else {
+      const productos = await serviciosProductos.obtenerTodosLosProductos()
       res.status(200).json(productos);
     }
   } catch (error) {
@@ -39,14 +31,11 @@ const obtenerProductoPorParametro = (req, res) => {
   }
 };
 
-const crearProducto = (req, res) => {
+const crearProducto = async (req, res) => {
   try {
-    const nuevoProducto = {
-      id: productos[productos.length - 1].id + 1,
-      ...req.body,
-    };
-    productos.push(nuevoProducto);
-    res.status(201).json(nuevoProducto);
+    const productoCreado = await serviciosProductos.nuevoProducto(req.body)
+    await productoCreado.save()
+    res.status(201).json(productoCreado);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -55,13 +44,8 @@ const crearProducto = (req, res) => {
 const editarProductoXId = (req, res) => {
   try {
     const id = Number(req.params.idProducto);
-    const posicionProdEnElArray = productos.findIndex((prod) => prod.id === id);
-    const productoEditado = {
-      id,
-      ...req.body,
-    };
-    productos[posicionProdEnElArray] = productoEditado;
-    res.status(200).json(productoEditado);
+    const productoActualizado = serviciosProductos.editarProducto(id)
+    res.status(200).json(productoActualizado);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -70,9 +54,10 @@ const editarProductoXId = (req, res) => {
 const eliminarProductoXId = (req, res) => {
   try {
     const id = Number(req.params.idProducto);
-    const productosNoBorrados = productos.filter((prod) => prod.id !== id);
-    productos = productosNoBorrados;
-    res.status(200).json(productos);
+    let resultado = serviciosProductos.eliminarProducto(id)
+    if(resultado === 200){
+      res.status(200).json("Producto Eliminado");
+    }
   } catch (error) {
     res.status(500).json(error);
   }
