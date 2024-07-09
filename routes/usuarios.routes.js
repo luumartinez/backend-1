@@ -1,9 +1,10 @@
 const { Router } = require('express');
-const { registrarUsuario, mostrarTodosLosUsuarios, mostrarUsuarioXId, bajaFisicaUsuario, bajaLogicaUsuario } = require('../controllers/usuarios.controllers');
+const { registrarUsuario, mostrarTodosLosUsuarios, mostrarUsuarioXId, bajaFisicaUsuario, bajaLogicaUsuario, iniciarSesion } = require('../controllers/usuarios.controllers');
 const router = Router()
 
 /* CREAR USUARIO */
 router.post('/', registrarUsuario);
+router.post('/login', iniciarSesion);
 
 router.get('/', mostrarTodosLosUsuarios);
 router.get('/:idUsuario', mostrarUsuarioXId);

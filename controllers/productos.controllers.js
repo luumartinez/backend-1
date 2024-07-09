@@ -41,20 +41,20 @@ const crearProducto = async (req, res) => {
   }
 };
 
-const editarProductoXId = (req, res) => {
+const editarProductoXId = async (req, res) => {
   try {
-    const id = Number(req.params.idProducto);
-    const productoActualizado = serviciosProductos.editarProducto(id)
+    const id = req.params.idProducto;
+    const productoActualizado = await serviciosProductos.editarProducto(id, req.body)
     res.status(200).json(productoActualizado);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-const eliminarProductoXId = (req, res) => {
+const eliminarProductoXId = async(req, res) => {
   try {
-    const id = Number(req.params.idProducto);
-    let resultado = serviciosProductos.eliminarProducto(id)
+    const id = req.params.idProducto;
+    let resultado = await serviciosProductos.eliminarProducto(id)
     if(resultado === 200){
       res.status(200).json("Producto Eliminado");
     }

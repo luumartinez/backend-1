@@ -1,8 +1,8 @@
 const serviciosUsuarios = require("../services/usuarios.services");
 
-const registrarUsuario = (req, res) => {
+const registrarUsuario = async (req, res) => {
   try {
-    const resultado = serviciosUsuarios.nuevoUsuario(req.body);
+    const resultado = await serviciosUsuarios.nuevoUsuario(req.body);
     if (resultado === 201) {
       res.status(201).json("Usuario registrado con éxito");
     }
@@ -11,18 +11,31 @@ const registrarUsuario = (req, res) => {
   }
 };
 
-const mostrarTodosLosUsuarios = (req, res) => {
+const iniciarSesion = async (req,res) =>{
   try {
-    const usuarios = serviciosUsuarios.obtenerTodosLosUsuarios();
+    const resultado = await serviciosUsuarios.inicioDeSesion(req.body)
+    if(resultado === 400){
+      res.stauts(400).json("Usuario y/o contraseña inconrrecto")
+    } else {
+      res.status(200).json({msg: "Inicio de sesión exitoso"})
+    }
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+const mostrarTodosLosUsuarios = async (req, res) => {
+  try {
+    const usuarios = await serviciosUsuarios.obtenerTodosLosUsuarios();
     res.status(200).json(usuarios);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
-const mostrarUsuarioXId = (req, res) => {
+const mostrarUsuarioXId = async (req, res) => {
   try {
-    const usuario = serviciosUsuarios.obtenerUsuarioXID(req.params.id);
+    const usuario = await serviciosUsuarios.obtenerUsuarioXID(req.params.id);
     res.status(200).json(usuario);
   } catch (error) {
     res.status(500).json(error);
@@ -30,22 +43,23 @@ const mostrarUsuarioXId = (req, res) => {
 };
 
 // Lo elimina DEFINITIVAMENTE
-const bajaFisicaUsuario = (req, res) => {
+const bajaFisicaUsuario = async (req, res) => {
   try {
-    const resultado = serviciosUsuarios.eliminarUsuario(req.params.id)
+    const resultado = await serviciosUsuarios.eliminarUsuario(req.params.idUsuario)
     if(resultado === 200) {
-      res.status(200).json({ msg: "Usuario borrado", usuarios });
+      res.status(200).json({ msg: "Usuario borrado" });
     }
+    console.log(resultado)
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
 //DESHABILITO UN USUARIO
-const bajaLogicaUsuario = (req, res) => {
+const bajaLogicaUsuario = async (req, res) => {
   try {
-    const resultado = serviciosUsuarios.deshabilitarUsuario(req.params.idUsuario);
-    res.status(200).json({ msg: resultado });
+    const bloqueado = await serviciosUsuarios.deshabilitarUsuario(req.params.idUsuario);
+    res.status(200).json({msg: 'Estado del usuario', bloqueado});
   } catch (error) {
     res.status(500).json(error);
   }
@@ -57,4 +71,5 @@ module.exports = {
   mostrarUsuarioXId,
   bajaLogicaUsuario,
   bajaFisicaUsuario,
+  iniciarSesion
 };

@@ -12,22 +12,22 @@
 ];
  */
 
-const ProductModel = require('../models/producto.schema')
-const obtenerTodosLosProductos = async() => {
-  const productos = await ProductModel.find()
+const ProductModel = require("../models/producto.schema");
+const obtenerTodosLosProductos = async () => {
+  const productos = await ProductModel.find();
   return productos;
 };
 
 const obtenerUnProducto = (id) => {
-  const producto = ProductModel.findOne({_id: id});
+  const producto = ProductModel.findOne({ _id: id });
   return producto;
 };
 
 const nuevoProducto = (body) => {
   try {
-    const newProduct = new ProductModel(body)
-    return newProduct
-/*     const nuevoProducto = {
+    const newProduct = new ProductModel(body);
+    return newProduct;
+    /*     const nuevoProducto = {
       id: productos[productos.length - 1].id + 1,
       ...body,
     };
@@ -38,24 +38,23 @@ const nuevoProducto = (body) => {
   }
 };
 
-const editarProducto = (idProducto) => {
+const editarProducto = async (idProducto, body) => {
   try {
-    const posicionProdEnElArray = productos.findIndex((prod) => prod.id === idProducto);
-    const productoEditado = {
-      id,
-      ...req.body,
-    };
-    productos[posicionProdEnElArray] = productoEditado;
+    const productoEditado = await ProductModel.findByIdAndUpdate(
+      { _id: idProducto },
+      body,
+      { new: true }
+    );
+    //new: true -> devuelve la nueva actualizacion, si no devuelve la versión anterior
     return productoEditado;
   } catch (error) {
     console.log(error);
   }
 };
 
-const eliminarProducto = (idProducto) => {
+const eliminarProducto = async (idProducto) => {
   try {
-    const posicionProdEnElArray = productos.findIndex((prod) => prod.id !== idProducto);
-    productos.splice(posicionProdEnElArray, 1);
+    await ProductModel.findByIdAndDelete({ _id: idProducto });
     return 200;
   } catch (error) {
     console.log(error);

@@ -4,9 +4,9 @@
 const mongoose = require("mongoose");
 
 const ProductSchema = new mongoose.Schema({
-  nombre: String,
+  nombre: { type: String, required: true },
   descripcion: { type: String, required: true },
-  precio: Number,
+  precio: { type: String, required: true },
 });
 
 const ProductModel = mongoose.model("product", ProductSchema);

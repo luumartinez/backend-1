@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const cors = require("cors");
+const morgan = require("morgan")
 require('../db/config')
 
 class Server {
@@ -27,6 +28,7 @@ class Server {
        bloquea la petición -> el servicio no tiene habilitado los cors.
        libreria cors*/
     this.app.use(cors())
+    this.app.use(morgan('dev')) //Muestra cuál es la ruta que falla
 
   }
   routes() {
