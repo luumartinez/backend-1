@@ -21,7 +21,7 @@ class Server {
   middleware() {
     /* Middlewares */
     this.app.use(express.json());
-    this.app.use(express.static(path.join(__dirname, "public")));
+    this.app.use(express.static(path.join(__dirname, "../public")));
     /* Archivos estáticos */
     /* CORS: cabecera grande de permisos que manda el server */
     /* Cuando tenemos front corriendo en un puerto y queremos consumir del puerto del back: por permisos, el navegador
