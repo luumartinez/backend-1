@@ -21,17 +21,19 @@ class Server {
   middleware() {
     /* Middlewares */
     this.app.use(express.json());
-    /* Archivos estáticos */
     this.app.use(express.static(path.join(__dirname, "public")));
+    /* Archivos estáticos */
     /* CORS: cabecera grande de permisos que manda el server */
     /* Cuando tenemos front corriendo en un puerto y queremos consumir del puerto del back: por permisos, el navegador
-       bloquea la petición -> el servicio no tiene habilitado los cors.
-       libreria cors*/
+    bloquea la petición -> el servicio no tiene habilitado los cors.
+    libreria cors*/
     this.app.use(cors())
     this.app.use(morgan('dev')) //Muestra cuál es la ruta que falla
-
   }
   routes() {
+    this.app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    });
     this.app.use('/api/productos', require('../routes/productos.routes')) //Configura una ruta por defecto
     this.app.use('/api/usuarios', require('../routes/usuarios.routes'))
   }
