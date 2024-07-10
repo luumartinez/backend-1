@@ -31,9 +31,6 @@ class Server {
     this.app.use(morgan('dev')) //Muestra cuál es la ruta que falla
   }
   routes() {
-    this.app.get('/', (req, res) => {
-      res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    });
     this.app.use('/api/productos', require('../routes/productos.routes')) //Configura una ruta por defecto
     this.app.use('/api/usuarios', require('../routes/usuarios.routes'))
   }
