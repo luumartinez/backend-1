@@ -1,14 +1,5 @@
 const UsuarioModel = require("../models/usuarios.schema");
 const bcrypt = require("bcrypt");
-/* let usuarios = [
-  {
-    id: 1,
-    nombreUsuario: "lucifer13",
-    email: "lucifer13@gmail.com",
-    pass: "123456",
-    baja: false,
-  },
-]; */
 
 const nuevoUsuario = async (body) => {
   try {
@@ -17,6 +8,9 @@ const nuevoUsuario = async (body) => {
     });
     if (usuarioExistente) {
       return 400;
+    }
+    if (body.rol !== "usuario" && body.rol !== "admin") {
+      return 409;
     }
     let salt = bcrypt.genSaltSync();
     body.password = bcrypt.hashSync(body.password, salt);
@@ -62,7 +56,7 @@ const obtenerTodosLosUsuarios = async () => {
 
 const obtenerUsuarioXID = async (idUsuario) => {
   try {
-    const usuario = await UsuarioModel.findOne(idUsuario);
+    const usuario = await UsuarioModel.findOne({ _id: idUsuario });
     return usuario;
   } catch (error) {
     console.log(error);
@@ -71,7 +65,7 @@ const obtenerUsuarioXID = async (idUsuario) => {
 
 const eliminarUsuario = async (idUsuario) => {
   try {
-    await UsuarioModel.findByIdAndDelete({_id : idUsuario})
+    await UsuarioModel.findByIdAndDelete({ _id: idUsuario });
     return 200;
   } catch (error) {
     console.log(error);

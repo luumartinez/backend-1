@@ -1,10 +1,17 @@
 const serviciosUsuarios = require("../services/usuarios.services");
+const { validationResult } = require('express-validator')
 
 const registrarUsuario = async (req, res) => {
   try {
+    const {errors} = validationResult(req)
+    if(errors.length){
+      return res.status(400).json({msg: errors[0].msg})
+    }
     const resultado = await serviciosUsuarios.nuevoUsuario(req.body);
     if (resultado === 201) {
       res.status(201).json("Usuario registrado con éxito");
+    } else if (resultado === 409){
+      res.status(409).json("Error al crear: rol incorrecto");
     }
   } catch (error) {
     res.status(500).json(error);
@@ -35,7 +42,11 @@ const mostrarTodosLosUsuarios = async (req, res) => {
 
 const mostrarUsuarioXId = async (req, res) => {
   try {
-    const usuario = await serviciosUsuarios.obtenerUsuarioXID(req.params.id);
+    // const {errors} = validationResult(req)
+    // if(errors.length){
+    //   return res.status(400).json({msg: errors[0].msg})
+    // }
+    const usuario = await serviciosUsuarios.obtenerUsuarioXID(req.params.idUsuario);
     res.status(200).json(usuario);
   } catch (error) {
     res.status(500).json(error);

@@ -13,9 +13,17 @@
  */
 
 const ProductModel = require("../models/producto.schema");
-const obtenerTodosLosProductos = async () => {
-  const productos = await ProductModel.find();
-  return productos;
+const obtenerTodosLosProductos = async (limit, to) => {
+  /*   const productos = await ProductModel.find();
+  return productos; */
+  const [productos, cantidadTotal] = await Promise.all([
+    ProductModel.find()
+      .skip(to * limit)
+      .limit(limit), // SKIP: define desde qué posición devuelve los documentos
+    ProductModel.countDocuments(),
+  ]);
+  const paginacion = { productos, cantidadTotal };
+  return paginacion;
 };
 
 const obtenerUnProducto = (id) => {

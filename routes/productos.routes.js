@@ -1,6 +1,7 @@
 const express = require("express");
 const { obtenerProducPorIdOTodos, crearProducto, editarProductoXId, eliminarProductoXId, obtenerProductoPorParametro } = require("../controllers/productos.controllers");
 const router = express.Router();
+const { check } = require('express-validator')
 /* También se puede desestructurar
 const { Router } = require('express) -> trae directamente Router de la librerái express
 */
@@ -13,10 +14,18 @@ router.get("/:idProducto", obtenerProductoPorParametro);
 router.get("/", obtenerProducPorIdOTodos)
 
 // POST
-router.post("/", crearProducto);
+router.post("/", [
+    check('nombre', 'Campo NOMBRE vacío').not().isEmpty(),
+    check('precio', 'Campo PRECIO vacío').not().isEmpty(),
+    check('descripcion', 'Campo DESCRIPCION vacío').not().isEmpty()
+], crearProducto);
 
 // PUT
-router.put("/:idProducto", editarProductoXId);
+router.put("/:idProducto", [
+    check('nombre', 'Campo NOMBRE vacío').not().isEmpty(),
+    check('precio', 'Campo PRECIO vacío').not().isEmpty(),
+    check('descripcion', 'Campo DESCRIPCION vacío').not().isEmpty()
+], editarProductoXId);
 
 // DELETE
 router.delete("/:idProducto", eliminarProductoXId);
