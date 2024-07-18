@@ -1,3 +1,4 @@
+const ProductModel = require('../models/producto.schema');
 const serviciosProductos = require('../services/productos.services')
 const {validationResult} = require('express-validator')
 
@@ -75,10 +76,42 @@ const eliminarProductoXId = async(req, res) => {
   }
 };
 
+const agregarImagenXId = async (req, res) =>{
+  try {
+    const resultado = await serviciosProductos.agregarImagen(req.params.idProducto, req.file)
+    if(resultado === 200){
+      return res.status(200).json({msg:'Imagen agregada'})
+    } 
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const buscarProductoPorTermino = async (req, res) =>{
+  try {
+    console.log(req.query.termino)
+    const resultado = await serviciosProductos.buscarProducto(req.query.termino)
+    return res.status(200).json(resultado)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+// const buscarProductoPorTermino = async (req, res) => {
+//   try {
+//     const resultado = await serviciosProductos.buscarProducto(req.query.termino)
+//     res.json(resultado)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
 module.exports = {
   obtenerProducPorIdOTodos,
   obtenerProductoPorParametro,
   crearProducto,
   editarProductoXId,
   eliminarProductoXId,
+  agregarImagenXId,
+  buscarProductoPorTermino
 };

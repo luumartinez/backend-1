@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const { registrarUsuario, mostrarTodosLosUsuarios, mostrarUsuarioXId, bajaFisicaUsuario, bajaLogicaUsuario, iniciarSesion } = require('../controllers/usuarios.controllers');
 const router = Router()
-const { check } = require('express-validator')
+const { check } = require('express-validator');
+const auth = require('../middlewares/auth');
 //chech -> hace una validación más grande. Si quiero algo más específico puedo usar body/ params/ query
 
 /* CREAR USUARIO */
@@ -16,13 +17,13 @@ router.post('/login',[
     check('password', 'Campo CONTRASEÑA vacio').not().isEmpty()
 ], iniciarSesion);
 
-router.get('/', mostrarTodosLosUsuarios);
+router.get('/', auth('admin'), mostrarTodosLosUsuarios);
 router.get('/:idUsuario',[
     check('_id', 'Formato de id incorrecto').isMongoId()
-], mostrarUsuarioXId);
+], auth('admin'), mostrarUsuarioXId);
 
-router.delete('/:idUsuario', bajaFisicaUsuario);
+router.delete('/:idUsuario',auth('admin'), bajaFisicaUsuario);
 
-router.put('/:idUsuario', bajaLogicaUsuario)
+router.put('/:idUsuario',auth('admin'), bajaLogicaUsuario)
 
 module.exports = router
