@@ -9,13 +9,13 @@ const { Router } = require('express) -> trae directamente Router de la librerái
 */
 
 // GET
-/* PARAMS */
-router.get("/:idProducto", obtenerProductoPorParametro);
 
 /* QUERY */
 router.get("/", obtenerProducPorIdOTodos)
 
 router.get('/buscar', buscarProductoPorTermino)
+/* PARAMS */
+router.get("/:idProducto", obtenerProductoPorParametro);
 
 // POST
 router.post("/", [

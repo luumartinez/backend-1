@@ -72,24 +72,17 @@ const agregarImagen = async (idProducto, file) => {
 
 const buscarProducto = async (termino) => {
   try {
-    console.log(termino)
-    const reglaBusqueda = new RegExp(termino, 'i') // i: no importa el camel case
-    const productos = await ProductModel.find({nombre: reglaBusqueda})
-    return productos
+    console.log(termino);
+    const reglaBusqueda = new RegExp(termino, "i"); // i: no importa el camel case
+    const productos = await ProductModel.find({
+      $or: [{ nombre: reglaBusqueda }, { descripcion: reglaBusqueda }],
+    });
+    return productos;
   } catch (error) {
     console.log(error);
   }
 };
-// const buscarProducto = async (termino) => {
-//   const reglaBusqueda = new RegExp(termino, 'i')
-//   const productos = await ProductModel.find({
-//     $or: [
-//       {nombre: reglaBusqueda},
-//       {descripcion: reglaBusqueda}
-//     ]
-//   })
-//   return productos
-// }
+
 module.exports = {
   obtenerTodosLosProductos,
   obtenerUnProducto,

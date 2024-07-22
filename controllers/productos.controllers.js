@@ -89,22 +89,12 @@ const agregarImagenXId = async (req, res) =>{
 
 const buscarProductoPorTermino = async (req, res) =>{
   try {
-    console.log(req.query.termino)
     const resultado = await serviciosProductos.buscarProducto(req.query.termino)
     return res.status(200).json(resultado)
   } catch (error) {
     console.log(error)
   }
 }
-
-// const buscarProductoPorTermino = async (req, res) => {
-//   try {
-//     const resultado = await serviciosProductos.buscarProducto(req.query.termino)
-//     res.json(resultado)
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
 
 module.exports = {
   obtenerProducPorIdOTodos,
