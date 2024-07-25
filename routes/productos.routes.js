@@ -1,5 +1,5 @@
 const express = require("express");
-const { obtenerProducPorIdOTodos, crearProducto, editarProductoXId, eliminarProductoXId, obtenerProductoPorParametro, agregarImagenXId, buscarProductoPorTermino } = require("../controllers/productos.controllers");
+const { obtenerProducPorIdOTodos, crearProducto, editarProductoXId, eliminarProductoXId, obtenerProductoPorParametro, agregarImagenXId, buscarProductoPorTermino, agregarProdAlCarrito, borrarProdDelCarrito, agregarProdFav, borrarProdDeFavs } = require("../controllers/productos.controllers");
 const router = express.Router();
 const { check } = require('express-validator');
 const auth = require("../middlewares/auth");
@@ -24,6 +24,11 @@ router.post("/", [
     check('descripcion', 'Campo DESCRIPCION vacío').not().isEmpty()
 ], auth('admin'), crearProducto);
 
+
+router.post('/carrito/:idProducto', auth('usuario'), agregarProdAlCarrito)
+router.post('/eliminarDelCarrito/:idProducto', auth('usuario'), borrarProdDelCarrito)
+router.post('/favoritos/:idProducto', auth('usuario'), agregarProdFav)
+router.post('/eliminarDeFavs/:idProducto', auth('usuario'), borrarProdDeFavs)
 router.post('/agregarImagen/:idProducto',multer.single('imagen'), agregarImagenXId) 
 //multer.single => revisa el nombre que tiene que revisar. Sería la "key" por la que se manda el archivo
 

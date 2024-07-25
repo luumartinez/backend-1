@@ -8,6 +8,7 @@ module.exports = (rol) => (req, res, next) =>{
         }
         const verify = jwt.verify(token, process.env.JWT_SECRET)
         if(rol === verify.rol){
+            req.idUsuario = verify._id
            return next()
         } else {
             return res.status(401).json({msg:'No tenes acceso'})
