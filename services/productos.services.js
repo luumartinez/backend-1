@@ -191,6 +191,10 @@ const eliminarDeFavs = async (idUsuario, idProducto) => {
   }
 };
 
+const pagarConMP = async (body) => {
+  
+}
+
 
 module.exports = {
   obtenerTodosLosProductos,
@@ -203,5 +207,6 @@ module.exports = {
   agregarAlCarrito,
   eliminarDelCarrito,
   agregarAFavs,
-  eliminarDeFavs
+  eliminarDeFavs,
+  pagarConMP
 };

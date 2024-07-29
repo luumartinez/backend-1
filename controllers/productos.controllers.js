@@ -158,6 +158,14 @@ const borrarProdDeFavs = async (req, res) => {
   }
 }
 
+const mercadopago = async(req, res) => {
+  try {
+    const resultado = await serviciosProductos.pagarConMP(req.body)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   obtenerProducPorIdOTodos,
   obtenerProductoPorParametro,
@@ -169,5 +177,6 @@ module.exports = {
   agregarProdAlCarrito,
   borrarProdDelCarrito,
   agregarProdFav,
-  borrarProdDeFavs
+  borrarProdDeFavs,
+  mercadopago
 };
